@@ -1,0 +1,6 @@
+# Ignore raw data
+data/*.csv
+data/*.xlsx
+
+# Keep README
+!data/README.md
