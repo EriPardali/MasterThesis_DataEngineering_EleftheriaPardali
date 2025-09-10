@@ -29,19 +29,28 @@ The pipeline is demonstrated with API exposure using **FastAPI**.
 - **DataGrip** for SQL database management
 - **Uvicorn** (server for FastAPI)
 
-## Repository Structure (planned)
+## Repository Structure  
 
+The repository is organized into separate branches and directories to reflect the main stages of the pipeline.  
+
+### Branches and their purpose  
+- **main/** → Stable version, project overview  
+- **data-ingestion/** → Python scripts for loading the Lending Club dataset  
+- **data-cleaning-transformations/** → SQL/Python scripts for data cleaning & transformations  
+- **kpi-calculation/** → SQL scripts for KPI derivation  
+- **api-exposure/** → FastAPI app for exposing KPIs  
+
+### Directory layout  
 MasterThesis_DataEngineering_EleftheriaPardali/
-│
-├── data/                # Raw dataset (CSV files, Lending Club data)
-│
-├── sql/                 # SQL scripts (schemas, transformations, KPIs)
-│
-├── src/                 # Python source code
-│   ├── ingestion/       # Data loading scripts
-│   ├── transformations/ # Cleaning, derived fields
-│   └── api/             # FastAPI app
-│
-├── README.md            # Project description
-└── requirements.txt     # Dependencies
+
+├── data/                  # Raw dataset (CSV files, Lending Club data)
+├── sql/                   # SQL scripts (schemas, transformations, KPIs)
+├── src/                   # Python source code
+│   ├── ingestion/         # Data loading scripts
+│   ├── transformations/   # Data cleaning & feature engineering
+│   ├── kpis/              # KPI calculation logic
+│   └── api/               # FastAPI endpoints
+├── README.md              # Project description
+└── requirements.txt       # Dependencies
+
 
