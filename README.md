@@ -41,6 +41,7 @@ The repository is organized into separate branches and directories to reflect th
 - **api-exposure/** → FastAPI app for exposing KPIs  
 
 ### Directory layout  
+```bash
 MasterThesis_DataEngineering_EleftheriaPardali/
 
 ├── data/                  # Raw dataset (CSV files, Lending Club data)
@@ -51,6 +52,6 @@ MasterThesis_DataEngineering_EleftheriaPardali/
 │   ├── kpis/              # KPI calculation logic
 │   └── api/               # FastAPI endpoints
 ├── README.md              # Project description
-└── requirements.txt       # Dependencies
+└── requirements.txt       # Dependencies ```
 
 
