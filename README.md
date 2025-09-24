@@ -52,6 +52,7 @@ MasterThesis_DataEngineering_EleftheriaPardali/
 │   ├── kpis/              # KPI calculation logic
 │   └── api/               # FastAPI endpoints
 ├── README.md              # Project description
-└── requirements.txt       # Dependencies ```
+└── requirements.txt       # Dependencies
+```
 
 
