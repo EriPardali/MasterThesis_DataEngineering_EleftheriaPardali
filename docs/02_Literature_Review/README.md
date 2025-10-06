@@ -12,7 +12,7 @@ The review is structured around five core KPIs:
 5. **Loan Distribution by Grade**
 
 ## Deliverables
-- `Literature_Review.docx` – finalized academic chapter (KPI → Dataset → Results).
+- `Literature_Review.pdf` – finalized academic chapter (KPI → Dataset → Results).
 - (Optional) `Literature_Review_Summary_Table.xlsx` – summary of papers with KPIs, datasets, and results.
 
 ## Notes
