@@ -10,3 +10,4 @@ def get_engine():
     connection_url = f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
     engine = create_engine(connection_url)
     return engine
+
