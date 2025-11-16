@@ -1,37 +1,70 @@
-import pandas as pd
-from src.db.connection import get_engine
+import psycopg2
+import csv
+import os
 
-
-def load_raw_data():
-    """
-    Loads the raw Lending Club dataset from a local CSV file
-    and inserts it into the PostgreSQL table raw.lending_club_loans.
-    """
-    csv_path = "data/loan.csv"  
-    print(f" Reading CSV from: {csv_path}")
-
-    df = pd.read_csv(csv_path)
-    print(" DataFrame shape:", df.shape)
-
-    #Basic preprocessing (convert date columns) 
-    if "issue_date" in df.columns:
-        df["issue_date"] = pd.to_datetime(df["issue_date"], errors="coerce")
-
-    if "earliest_credit_line" in df.columns:
-        df["earliest_credit_line"] = pd.to_datetime(df["earliest_credit_line"], errors="coerce")
-
-    print(" Connecting to PostgreSQL...")
-    engine = get_engine()
-
-    print(" Loading data into raw.lending_club_loans...")
-
-    df.to_sql(
-        name="lending_club_loans",
-        con=engine,
-        schema="raw",
-        if_exists="append",
-        index=False,
+def load_fast():
+    csv_path = "data/loan.csv"
+    conn = psycopg2.connect(
+        dbname="loan_portfolio_db",
+        user="postgres",
+        password="postgres",
+        host="localhost",
+        port="5432"
     )
+    cur = conn.cursor()
+
+    print("Creating table raw.lending_club_loans...")
+
+    cur.execute("""
+        DROP TABLE IF EXISTS raw.lending_club_loans;
+
+        CREATE TABLE raw.lending_club_loans (
+            id BIGINT,
+            member_id BIGINT,
+            loan_amnt INTEGER,
+            funded_amnt INTEGER,
+            funded_amnt_inv INTEGER,
+            term TEXT,
+            int_rate TEXT,
+            installment TEXT,
+            grade TEXT,
+            sub_grade TEXT,
+            emp_title TEXT,
+            emp_length TEXT,
+            home_ownership TEXT,
+            annual_inc REAL,
+            verification_status TEXT,
+            issue_d TEXT,
+            loan_status TEXT,
+            purpose TEXT,
+            title TEXT,
+            zip_code TEXT,
+            addr_state TEXT,
+            earliest_cr_line TEXT,
+            -- ... Μπορούμε να προσθέσουμε και τα υπόλοιπα 145 columns,
+            -- ή να κάνουμε dynamic load.
+            dummy TEXT
+        );
+    """)
+
+    conn.commit()
+
+    print("Loading file with COPY...")
+
+    with open(csv_path, "r", encoding="utf-8") as f:
+        next(f)  
+        cur.copy_expert("""
+            COPY raw.lending_club_loans
+            FROM STDIN
+            WITH (FORMAT csv, NULL '', DELIMITER ',', QUOTE '\"');
+        """, f)
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    print(" Fast ingest complete.")
+    
 
 if __name__ == "__main__":
-    load_raw_data()
+    load_fast()
