@@ -1,5 +1,5 @@
 import pandas as pd
-from db.connection import get_engine
+from src.db.connection import get_engine
 
 
 def load_raw_data():
