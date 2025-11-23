@@ -1,21 +1,36 @@
-# Ignore raw data and sensitive files
-data/*.csv
-data/*.xlsx
-data/processed/
-.env
+# Raw data
+data/raw/*
+*.csv
+*.xlsx
+*.xls
 
-# Keep README file inside data/
-!data/README.md
+# Processed datasets
+data/processed/*
+src/transformations/data/*
+*.parquet
 
-# Python cache / build artifacts
+# Jupyter checkpoints
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
+# OS files
+.DS_Store
+Thumbs.db
 
-# VS Code folders
+# VS Code
+.vscode/*
+!.vscode/settings.json
 
-.vscode/cd 
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+*.sqlite
