@@ -1,13 +1,8 @@
-# Raw data
+# Raw & processed data
 data/raw/*
 *.csv
 *.xlsx
 *.xls
-
-# Processed datasets
-data/processed/*
-src/transformations/data/*
-*.parquet
 
 # Jupyter checkpoints
 .ipynb_checkpoints/
