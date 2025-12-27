@@ -1,0 +1,27 @@
+column_name,data_type,description
+loan_amnt,NUMERIC(12,2),Approved loan amount
+int_rate,NUMERIC(6,4),Interest rate (decimal)
+installment,NUMERIC(12,2),Monthly installment amount
+sub_grade,TEXT,Sub-grade label (e.g. A1)
+issue_d,DATE,Loan issue date (month start)
+issue_d_year,SMALLINT,Issue year
+issue_d_month,SMALLINT,Issue month (1-12)
+annual_inc,NUMERIC(14,2),Annual income
+dti,NUMERIC(7,4),Debt-to-income ratio
+emp_length_years,SMALLINT,Employment length in years
+addr_state,CHAR(2),US state (2-letter code)
+revol_bal,BIGINT,Revolving balance
+revol_util,NUMERIC(7,4),Revolving utilization ratio/percent
+credit_history_age_months,INTEGER,Credit history age in months
+total_pymnt,NUMERIC(14,2),Total payments received
+total_rec_int,NUMERIC(14,2),Total interest received
+recoveries,NUMERIC(14,2),Recoveries amount
+last_pymnt_d,DATE,Last payment date (month start)
+last_pymnt_amnt,NUMERIC(14,2),Last payment amount
+payment_to_loan_ratio,NUMERIC(14,6),total_pymnt / loan_amnt
+income_to_loan_ratio,NUMERIC(14,6),annual_inc / loan_amnt
+grade_ord,SMALLINT,Grade ordinal encoding
+sub_grade_ord,SMALLINT,Sub-grade ordinal encoding
+loan_status_binary,SMALLINT,Target label (0/1)
+
+
