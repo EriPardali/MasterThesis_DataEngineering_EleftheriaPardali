@@ -1,6 +1,8 @@
 import pandas as pd
 from pathlib import Path
 from src.db.connection import get_engine
+from src.schemas.staging_schema import STAGING_DTYPES
+
 
 def load_analytics_data():
     engine = get_engine()
@@ -14,7 +16,8 @@ def load_analytics_data():
         schema="analytics",
         con=engine,
         if_exists="replace",
-        index=False
+        index=False,
+        dtype=STAGING_DTYPES
     )
 
     print("Completed loading into analytics.loan_portfolio_features.")
