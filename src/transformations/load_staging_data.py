@@ -5,7 +5,7 @@ from src.schemas.staging_schema import STAGING_DTYPES
 
 
 # Path to the processed CSV produced during feature engineering
-CSV_PATH = Path("src/transformations/data/processed/loan_portfolio_features.csv")
+CSV_PATH = Path("data/processed/loan_kpi_staging_typed.csv")
 
 
 def load_staging_data():
