@@ -1,6 +1,7 @@
 import pandas as pd
 from pathlib import Path
 from src.db.connection import get_engine
+from src.schemas.staging_schema import STAGING_DTYPES
 
 
 # Path to the processed CSV produced during feature engineering
@@ -23,7 +24,8 @@ def load_staging_data():
         schema="staging",
         con=engine,
         if_exists="replace",
-        index=False
+        index=False,
+        dtype=STAGING_DTYPES
     )
 
     print("Completed loading into staging.loan_portfolio_features.")
