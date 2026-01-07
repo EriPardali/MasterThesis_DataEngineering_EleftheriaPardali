@@ -1,0 +1,34 @@
+#  AIRFLOW (CRITICAL) 
+airflow/logs/
+airflow/plugins/
+airflow/__pycache__/
+airflow/.pytest_cache/
+
+# PYTHON 
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache/
+
+# DATA 
+data/
+*.csv
+*.parquet
+*.zip
+
+# ENV / LOCAL
+.env
+.env.*
+.pgdata/
+logs/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# GIT 
+.git/
+.gitignore
