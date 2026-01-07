@@ -1,20 +1,31 @@
-from sqlalchemy import create_engine
-from dotenv import load_dotenv
 import os
+from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
 
-load_dotenv()  # Load variables from .env
 
-def get_engine():
-    db_user = os.getenv("DB_USER")
-    db_pass = os.getenv("DB_PASS")
-    db_host = os.getenv("DB_HOST")
-    db_port = os.getenv("DB_PORT")
-    db_name = os.getenv("DB_NAME")
+def get_engine() -> Engine:
+    """
+    Create and return a SQLAlchemy engine.
 
-    connection_url = (
-        f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
+    Priority:
+    1) AIRFLOW_CONN_THESIS_POSTGRES (Airflow-style connection, used in Docker/Airflow)
+    2) DATABASE_URL (generic, used for local runs)
+    """
+
+    db_url = (
+        os.getenv("AIRFLOW_CONN_THESIS_POSTGRES")
+        or os.getenv("DATABASE_URL")
     )
 
-    engine = create_engine(connection_url)
-    return engine
+    if not db_url:
+        raise RuntimeError(
+            "No database connection string found. "
+            "Set AIRFLOW_CONN_THESIS_POSTGRES (Airflow/Docker) "
+            "or DATABASE_URL (local)."
+        )
 
+    return create_engine(
+        db_url,
+        pool_pre_ping=True,
+        future=True,
+    )
