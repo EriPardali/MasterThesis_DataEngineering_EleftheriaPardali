@@ -2,13 +2,6 @@
 # Ignore ALL CSVs by default
 *.csv
 
-#keep processed analytical data
-data/
-data/processed/
-data/processed/*
-*.csv
-
-
 # PostgreSQL (Docker)
 pgdata/
 
