@@ -1,25 +1,83 @@
-version: "3.9"
-
 services:
-  postgres:
+  thesis-postgres:
     image: postgres:15
     container_name: thesis-postgres
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: loan_portfolio_db
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: thesis-pgadmin
     ports:
-      - "5050:80"
+      - "5432:5432"
+    networks:
+      - thesis_net
+    volumes:
+      - thesis_pgdata:/var/lib/postgresql/data
+
+  airflow-db:
+    image: postgres:15
+    container_name: airflow-db
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@local
-      PGADMIN_DEFAULT_PASSWORD: admin
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:
+      - "5434:5432"
+    networks:
+      - thesis_net
+    volumes:
+      - airflow_pgdata:/var/lib/postgresql/data
+
+  airflow:
+    build:
+      context: .
+      dockerfile: airflow/Dockerfile
+    container_name: thesis-airflow
     depends_on:
-      - postgres
+      - airflow-db
+      - thesis-postgres
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      PYTHONPATH: /opt/airflow/project
+      AIRFLOW_CONN_THESIS_POSTGRES: postgresql://postgres:postgres@thesis-postgres:5432/loan_portfolio_db
+      DATABASE_URL: postgresql://postgres:postgres@thesis-postgres:5432/loan_portfolio_db
+    ports:
+      - "8081:8080"
+    networks:
+      - thesis_net
+    volumes:
+      - "C:/Users/parda/OneDrive/Desktop/Thesis/MasterThesis_DataEngineering_EleftheriaPardali/airflow/dags:/opt/airflow/dags"
+      - "C:/Users/parda/OneDrive/Desktop/Thesis/MasterThesis_DataEngineering_EleftheriaPardali/data:/opt/airflow/data"
+      - "C:/Users/parda/OneDrive/Desktop/Thesis/MasterThesis_DataEngineering_EleftheriaPardali/src:/opt/airflow/project/src"
+    restart: unless-stopped
+    command: >
+      bash -lc "
+      until pg_isready -h airflow-db -p 5432; do echo 'waiting for airflow-db'; sleep 2; done;
+      until pg_isready -h thesis-postgres -p 5432; do echo 'waiting for thesis-postgres'; sleep 2; done;
+      airflow db migrate &&
+      airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com || true &&
+      exec airflow standalone"
+
+  thesis-api:
+    build:
+      context: .
+      dockerfile: src/api/Dockerfile
+    container_name: thesis-api
+    depends_on:
+      - thesis-postgres
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@thesis-postgres:5432/loan_portfolio_db
+      PYTHONPATH: /app
+    ports:
+      - "8000:8000"
+    networks:
+      - thesis_net
+
+volumes:
+  thesis_pgdata:
+  airflow_pgdata:
+
+networks:
+  thesis_net:
+    driver: bridge
