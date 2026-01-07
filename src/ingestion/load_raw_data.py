@@ -2,9 +2,8 @@ import csv
 from pathlib import Path
 from src.db.connection import get_engine
 
-
 # Absolute path to the raw CSV file
-CSV_PATH = Path(r"C:\Users\parda\OneDrive\Desktop\Thesis\data\loan.csv")
+CSV_PATH = Path("/opt/airflow/data/loan.csv")
 
 
 def create_raw_table_if_not_exists(engine) -> None:
@@ -15,14 +14,12 @@ def create_raw_table_if_not_exists(engine) -> None:
     print(f"Reading CSV header from: {CSV_PATH}")
 
     # Read only the first row (column names)
-    with CSV_PATH.open("r", encoding="utf-8") as f:
+    with CSV_PATH.open("r", encoding="utf-8", errors="replace") as f:
         reader = csv.reader(f)
         header = next(reader)
 
     # Build TEXT columns
-    column_definitions = ",\n    ".join(
-        [f'"{col}" TEXT' for col in header]
-    )
+    column_definitions = ",\n    ".join([f'"{col}" TEXT' for col in header])
 
     ddl = f"""
     CREATE SCHEMA IF NOT EXISTS raw;
@@ -35,9 +32,9 @@ def create_raw_table_if_not_exists(engine) -> None:
     """
 
     print("Recreating table raw.loan_portfolio ...")
-    with engine.connect() as conn:
+    # ✅ Transaction context: commits automatically if no error
+    with engine.begin() as conn:
         conn.exec_driver_sql(ddl)
-        conn.commit()
 
     print("Table creation completed.")
 
@@ -57,7 +54,7 @@ def load_raw_data_with_copy() -> None:
     conn = engine.raw_connection()
 
     try:
-        with conn.cursor() as cur, CSV_PATH.open("r", encoding="utf-8") as f:
+        with conn.cursor() as cur, CSV_PATH.open("r", encoding="utf-8", errors="replace") as f:
             print("Starting COPY into raw.loan_portfolio ...")
             copy_sql = """
                 COPY raw.loan_portfolio
