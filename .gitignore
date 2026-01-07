@@ -3,8 +3,10 @@
 *.csv
 
 #keep processed analytical data
-!data/processed/
-!data/processed/*.csv
+data/
+data/processed/
+data/processed/*
+*.csv
 
 
 # PostgreSQL (Docker)
@@ -35,3 +37,6 @@ Thumbs.db
 .env
 .env.*
 *.sqlite
+
+# IDE
+.idea/
