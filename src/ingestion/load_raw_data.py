@@ -32,7 +32,7 @@ def create_raw_table_if_not_exists(engine) -> None:
     """
 
     print("Recreating table raw.loan_portfolio ...")
-    # ✅ Transaction context: commits automatically if no error
+    # Transaction context: commits automatically if no error
     with engine.begin() as conn:
         conn.exec_driver_sql(ddl)
 
