@@ -43,16 +43,53 @@ The repository is organized into separate branches and directories to reflect th
 ### Directory layout  
 ```bash
 MasterThesis_DataEngineering_EleftheriaPardali/
-
-├── data/                  # Raw dataset (CSV files, Lending Club data)
-├── sql/                   # SQL scripts (schemas, transformations, KPIs)
-├── src/                   # Python source code
-│   ├── ingestion/         # Data loading scripts
-│   ├── transformations/   # Data cleaning & feature engineering
-│   ├── kpis/              # KPI calculation logic
-│   └── api/               # FastAPI endpoints
-├── README.md              # Project description
-└── requirements.txt       # Dependencies
-```
-
-
+│
+├── airflow/
+│   ├── dags/
+│   │   ├── loan_pipeline_dag.py
+│   │   └── tests/
+│   ├── plugins/
+│   └── Dockerfile
+│
+├── data/
+│   └── README.md
+│
+├── docs/
+│   ├── 02_Literature_Review/
+│   ├── 03_Methodology/
+│   └── 04_Results_and_Analysis/
+│
+├── sql/
+│   └── 01_create_schemas.sql
+│
+├── src/
+│   ├── api/
+│   │   ├── main.py
+│   │   ├── db.py
+│   │   ├── routes/
+│   │   │   └── kpi.py
+│   │   └── Dockerfile
+│   │
+│   ├── db/
+│   │   └── connection.py
+│   │
+│   ├── ingestion/
+│   │   └── load_raw_data.py
+│   │
+│   ├── schemas/
+│   │   └── staging_schema.py
+│   │
+│   ├── transformations/
+│   │   ├── feature_engineering.py
+│   │   ├── load_staging_data.py
+│   │   ├── load_analytics_data.py
+│   │   └── make_typed_kpi_csv.py
+│   │
+│   └── kpis/
+│       └── kpi_loan_portfolio.ipynb
+│
+├── docker-compose.yml
+├── requirements.txt
+├── README.md
+├── .gitignore
+└── .dockerignore
