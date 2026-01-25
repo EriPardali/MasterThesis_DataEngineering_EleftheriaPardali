@@ -18,7 +18,7 @@ def load_analytics_data() -> None:
     with engine.begin() as conn:
         conn.execute(text("CREATE SCHEMA IF NOT EXISTS analytics;"))
 
-    # Read staging table (row-level)
+    # Read staging table 
     print("Reading data from staging.loan_kpi_staging ...")
     df = pd.read_sql("SELECT * FROM staging.loan_kpi_staging", con=engine)
     print(f"Rows read from staging: {len(df)}")
