@@ -10,7 +10,7 @@ PROCESSED_DIR = OUTPUT_FILE.parent
 
 CHUNK_SIZE = 100_000
 
-# Keep only what is needed (reduces RAM usage)
+# Keep only what is needed 
 BASE_COLS = [
     "loan_amnt", "int_rate", "term", "installment",
     "grade", "sub_grade", "purpose", "annual_inc", "dti",
