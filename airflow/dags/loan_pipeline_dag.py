@@ -1,23 +1,22 @@
-    from datetime import datetime
+from datetime import datetime
 
-    from airflow import DAG
-    from airflow.operators.bash import BashOperator
+from airflow import DAG
+from airflow.operators.bash import BashOperator
 
-    default_args = {
+default_args = {
         "owner": "eri",
         "retries": 1,
-    }
+}
 
-    with DAG(
-        dag_id="loan_portfolio_pipeline",
-        default_args=default_args,
-        description="End-to-end pipeline: raw -> FE -> staging -> analytics -> tests",
-        start_date=datetime(2025, 1, 1),
-        schedule=None,
-        catchup=False,
-        tags=["thesis", "lendingclub", "kpi"],
-    ) as dag:
-
+with DAG(
+    dag_id="loan_portfolio_pipeline",
+    default_args=default_args,
+    description="End-to-end pipeline: raw -> FE -> staging -> analytics -> tests",
+    start_date=datetime(2025, 1, 1),
+    schedule=None,
+    catchup=False,
+    tags=["thesis", "lendingclub", "kpi"],
+) as dag:
         common_env = {
             "PYTHONPATH": "/opt/airflow/project",
             "AIRFLOW_CONN_THESIS_POSTGRES": (
